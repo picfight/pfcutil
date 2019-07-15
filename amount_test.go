@@ -53,7 +53,7 @@ func TestAmountCreation(t *testing.T) {
 			name:     "one hundred",
 			amount:   100,
 			valid:    true,
-			expected: 100 * SatoshiPerBitcoin,
+			expected: 100 * SatoshiPerPicfightcoin,
 		},
 		{
 			name:     "fraction",
@@ -65,13 +65,13 @@ func TestAmountCreation(t *testing.T) {
 			name:     "rounding up",
 			amount:   54.999999999999943157,
 			valid:    true,
-			expected: 55 * SatoshiPerBitcoin,
+			expected: 55 * SatoshiPerPicfightcoin,
 		},
 		{
 			name:     "rounding down",
 			amount:   55.000000000000056843,
 			valid:    true,
-			expected: 55 * SatoshiPerBitcoin,
+			expected: 55 * SatoshiPerPicfightcoin,
 		},
 
 		// Negative tests.
@@ -196,7 +196,7 @@ func TestAmountUnitConversions(t *testing.T) {
 		s1 := test.amount.Format(AmountPFC)
 		s2 := test.amount.String()
 		if s1 != s2 {
-			t.Errorf("%v: String does not match Format(AmountBitcoin): %v != %v", test.name, s1, s2)
+			t.Errorf("%v: String does not match Format(AmountPicfightcoin): %v != %v", test.name, s1, s2)
 		}
 	}
 }

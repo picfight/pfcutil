@@ -24,7 +24,7 @@ var (
 package base58
 
 const (
-	// alphabet is the modified base58 alphabet used by Bitcoin.
+	// alphabet is the modified base58 alphabet used by Picfightcoin.
 	alphabet = "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz"
 
 	alphabetIdx0 = '1'
