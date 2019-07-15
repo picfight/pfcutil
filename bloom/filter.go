@@ -27,7 +27,7 @@ func minUint32(a, b uint32) uint32 {
 	return b
 }
 
-// Filter defines a bitcoin bloom filter that provides easy manipulation of raw
+// Filter defines a picfightcoin bloom filter that provides easy manipulation of raw
 // filter data.
 type Filter struct {
 	mtx           sync.Mutex

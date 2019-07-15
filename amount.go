@@ -13,7 +13,7 @@ import (
 // AmountUnit describes a method of converting an Amount to something
 // other than the base unit of a bitcoin.  The value of the AmountUnit
 // is the exponent component of the decadic multiple to convert from
-// an amount in bitcoin to an amount counted in units.
+// an amount in picfightcoin to an amount counted in units.
 type AmountUnit int
 
 // These constants define various units used when describing a bitcoin
@@ -49,7 +49,7 @@ func (u AmountUnit) String() string {
 	}
 }
 
-// Amount represents the base bitcoin monetary unit (colloquially referred
+// Amount represents the base picfightcoin monetary unit (colloquially referred
 // to as a `Satoshi').  A single Amount is equal to 1e-8 of a bitcoin.
 type Amount int64
 
@@ -82,13 +82,13 @@ func NewAmount(f float64) (Amount, error) {
 	case math.IsInf(f, 1):
 		fallthrough
 	case math.IsInf(f, -1):
-		return 0, errors.New("invalid bitcoin amount")
+		return 0, errors.New("invalid picfightcoin amount")
 	}
 
 	return round(f * SatoshiPerPicfightcoin), nil
 }
 
-// ToUnit converts a monetary amount counted in bitcoin base units to a
+// ToUnit converts a monetary amount counted in picfightcoin base units to a
 // floating point value representing an amount of bitcoin.
 func (a Amount) ToUnit(u AmountUnit) float64 {
 	return float64(a) / math.Pow10(int(u+8))
@@ -99,7 +99,7 @@ func (a Amount) ToPFC() float64 {
 	return a.ToUnit(AmountPFC)
 }
 
-// Format formats a monetary amount counted in bitcoin base units as a
+// Format formats a monetary amount counted in picfightcoin base units as a
 // string for a given unit.  The conversion will succeed for any unit,
 // however, known units will be formated with an appended label describing
 // the units with SI notation, or "Satoshi" for the base unit.
@@ -115,7 +115,7 @@ func (a Amount) String() string {
 
 // MulF64 multiplies an Amount by a floating point value.  While this is not
 // an operation that must typically be done by a full node or wallet, it is
-// useful for services that build on top of bitcoin (for example, calculating
+// useful for services that build on top of picfightcoin (for example, calculating
 // a fee by multiplying by a percentage).
 func (a Amount) MulF64(f float64) Amount {
 	return round(float64(a) * f)

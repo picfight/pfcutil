@@ -55,7 +55,7 @@ func ExampleNewAmount() {
 	// Output: 1 PFC
 	// 0.01234567 PFC
 	// 0 PFC
-	// invalid bitcoin amount
+	// invalid picfightcoin amount
 }
 
 func ExampleAmount_unitConversions() {

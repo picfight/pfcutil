@@ -5,7 +5,7 @@ hdkeychain
 [![ISC License](http://img.shields.io/badge/license-ISC-blue.svg)](http://copyfree.org)
 [![GoDoc](http://img.shields.io/badge/godoc-reference-blue.svg)](http://godoc.org/github.com/picfight/pfcutil/hdkeychain)
 
-Package hdkeychain provides an API for bitcoin hierarchical deterministic
+Package hdkeychain provides an API for picfightcoin hierarchical deterministic
 extended keys (BIP0032).
 
 A comprehensive suite of tests is provided to ensure proper functionality.  See

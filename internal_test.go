@@ -91,14 +91,14 @@ func TstAddressPubKey(serializedPubKey []byte, pubKeyFormat PubKeyFormat,
 }
 
 // TstAddressSAddr returns the expected script address bytes for
-// P2PKH and P2SH bitcoin addresses.
+// P2PKH and P2SH picfightcoin addresses.
 func TstAddressSAddr(addr string) []byte {
 	decoded := base58.Decode(addr)
 	return decoded[1 : 1+ripemd160.Size]
 }
 
 // TstAddressSegwitSAddr returns the expected witness program bytes for
-// bech32 encoded P2WPKH and P2WSH bitcoin addresses.
+// bech32 encoded P2WPKH and P2WSH picfightcoin addresses.
 func TstAddressSegwitSAddr(addr string) []byte {
 	_, data, err := bech32.Decode(addr)
 	if err != nil {

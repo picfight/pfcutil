@@ -7,14 +7,14 @@ Package pfcutil provides bitcoin-specific convenience functions and types.
 
 Block Overview
 
-A Block defines a bitcoin block that provides easier and more efficient
+A Block defines a picfightcoin block that provides easier and more efficient
 manipulation of raw wire protocol blocks.  It also memoizes hashes for the
 block and its transactions on their first access so subsequent accesses don't
 have to repeat the relatively expensive hashing operations.
 
 Tx Overview
 
-A Tx defines a bitcoin transaction that provides more efficient manipulation of
+A Tx defines a picfightcoin transaction that provides more efficient manipulation of
 raw wire protocol transactions.  It memoizes the hash for the transaction on its
 first access so subsequent accesses don't have to repeat the relatively
 expensive hashing operations.
