@@ -223,7 +223,7 @@ func TestAddresses(t *testing.T) {
 			net: &chaincfg.MainNetParams,
 		},
 		{
-			// Taken from bitcoind base58_keys_valid.
+			// Taken from picfightcoind base58_keys_valid.
 			name:    "testnet p2sh",
 			addr:    "2NBFNJTktNa7GZusGbDbGKRZTxdK9VVez3n",
 			encoded: "2NBFNJTktNa7GZusGbDbGKRZTxdK9VVez3n",

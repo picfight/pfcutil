@@ -11,12 +11,12 @@ import (
 )
 
 // AmountUnit describes a method of converting an Amount to something
-// other than the base unit of a bitcoin.  The value of the AmountUnit
+// other than the base unit of a picfightcoin.  The value of the AmountUnit
 // is the exponent component of the decadic multiple to convert from
 // an amount in picfightcoin to an amount counted in units.
 type AmountUnit int
 
-// These constants define various units used when describing a bitcoin
+// These constants define various units used when describing a picfightcoin
 // monetary amount.
 const (
 	AmountMegaPFC  AmountUnit = 6
@@ -50,7 +50,7 @@ func (u AmountUnit) String() string {
 }
 
 // Amount represents the base picfightcoin monetary unit (colloquially referred
-// to as a `Satoshi').  A single Amount is equal to 1e-8 of a bitcoin.
+// to as a `Satoshi').  A single Amount is equal to 1e-8 of a picfightcoin.
 type Amount int64
 
 // round converts a floating point number, which may or may not be representable
@@ -65,8 +65,8 @@ func round(f float64) Amount {
 }
 
 // NewAmount creates an Amount from a floating point value representing
-// some value in bitcoin.  NewAmount errors if f is NaN or +-Infinity, but
-// does not check that the amount is within the total amount of bitcoin
+// some value in picfightcoin.  NewAmount errors if f is NaN or +-Infinity, but
+// does not check that the amount is within the total amount of picfightcoin
 // producible as f may not refer to an amount at a single moment in time.
 //
 // NewAmount is for specifically for converting PFC to Satoshi.
@@ -89,7 +89,7 @@ func NewAmount(f float64) (Amount, error) {
 }
 
 // ToUnit converts a monetary amount counted in picfightcoin base units to a
-// floating point value representing an amount of bitcoin.
+// floating point value representing an amount of picfightcoin.
 func (a Amount) ToUnit(u AmountUnit) float64 {
 	return float64(a) / math.Pow10(int(u+8))
 }

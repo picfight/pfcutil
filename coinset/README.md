@@ -5,7 +5,7 @@ coinset
 [![ISC License](http://img.shields.io/badge/license-ISC-blue.svg)](http://copyfree.org)
 [![GoDoc](http://img.shields.io/badge/godoc-reference-blue.svg)](http://godoc.org/github.com/picfight/pfcutil/coinset)
 
-Package coinset provides bitcoin-specific convenience functions for selecting
+Package coinset provides picfightcoin-specific convenience functions for selecting
 from and managing sets of unspent transaction outpoints (UTXOs).
 
 A comprehensive suite of tests is provided to ensure proper functionality.  See

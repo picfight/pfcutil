@@ -6,7 +6,7 @@ pfcutil
 [![ISC License](http://img.shields.io/badge/license-ISC-blue.svg)](http://copyfree.org)
 [![GoDoc](http://img.shields.io/badge/godoc-reference-blue.svg)](http://godoc.org/github.com/picfight/pfcutil)
 
-Package pfcutil provides bitcoin-specific convenience functions and types.
+Package pfcutil provides picfightcoin-specific convenience functions and types.
 A comprehensive suite of tests is provided to ensure proper functionality.  See
 `test_coverage.txt` for the gocov coverage report.  Alternatively, if you are
 running a POSIX OS, you can run the `cov_report.sh` script for a real-time

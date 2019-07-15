@@ -23,7 +23,7 @@ report.
 - Easy serialization and deserialization for both private and public extended
   keys
 - Support for custom networks by registering them with chaincfg
-- Obtaining the underlying EC pubkeys, EC privkeys, and associated bitcoin
+- Obtaining the underlying EC pubkeys, EC privkeys, and associated picfightcoin
   addresses ties in seamlessly with existing pfcec and pfcutil types which
   provide powerful tools for working with them to do things like sign
   transations and generate payment scripts
