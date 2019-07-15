@@ -3,6 +3,8 @@ go:
   - "1.9.4"
   - "1.10"
 sudo: false
+before_install:
+  - chmod +x ./goclean.sh
 install:
   - go get -d -t -v ./...
   - go get -v github.com/alecthomas/gometalinter
