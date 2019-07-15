@@ -83,7 +83,7 @@ func TestFilterInsert(t *testing.T) {
 	}
 
 	got := bytes.NewBuffer(nil)
-	err = f.MsgFilterLoad().BtcEncode(got, wire.ProtocolVersion, wire.LatestEncoding)
+	err = f.MsgFilterLoad().PfcEncode(got, wire.ProtocolVersion, wire.LatestEncoding)
 	if err != nil {
 		t.Errorf("TestFilterInsert PfcDecode failed: %v\n", err)
 		return
@@ -143,7 +143,7 @@ func TestFilterFPRange(t *testing.T) {
 		f := test.filter
 		f.AddHash(hash)
 		got := bytes.NewBuffer(nil)
-		err = f.MsgFilterLoad().BtcEncode(got, wire.ProtocolVersion, wire.LatestEncoding)
+		err = f.MsgFilterLoad().PfcEncode(got, wire.ProtocolVersion, wire.LatestEncoding)
 		if err != nil {
 			t.Errorf("PfcDecode unexpected error: %v\n", err)
 			continue
@@ -196,7 +196,7 @@ func TestFilterInsertWithTweak(t *testing.T) {
 		return
 	}
 	got := bytes.NewBuffer(nil)
-	err = f.MsgFilterLoad().BtcEncode(got, wire.ProtocolVersion, wire.LatestEncoding)
+	err = f.MsgFilterLoad().PfcEncode(got, wire.ProtocolVersion, wire.LatestEncoding)
 	if err != nil {
 		t.Errorf("TestFilterInsertWithTweak PfcDecode failed: %v\n", err)
 		return
@@ -230,7 +230,7 @@ func TestFilterInsertKey(t *testing.T) {
 		return
 	}
 	got := bytes.NewBuffer(nil)
-	err = f.MsgFilterLoad().BtcEncode(got, wire.ProtocolVersion, wire.LatestEncoding)
+	err = f.MsgFilterLoad().PfcEncode(got, wire.ProtocolVersion, wire.LatestEncoding)
 	if err != nil {
 		t.Errorf("TestFilterInsertWithTweak PfcDecode failed: %v\n", err)
 		return
