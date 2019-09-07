@@ -1,4 +1,5 @@
 // Copyright (c) 2014-2016 The btcsuite developers
+// Copyright (c) 2015-2016 The Decred developers
 // Use of this source code is governed by an ISC
 // license that can be found in the LICENSE file.
 
@@ -27,7 +28,7 @@ func minUint32(a, b uint32) uint32 {
 	return b
 }
 
-// Filter defines a picfightcoin bloom filter that provides easy manipulation of raw
+// Filter defines a bloom filter that provides easy manipulation of raw
 // filter data.
 type Filter struct {
 	mtx           sync.Mutex
@@ -115,7 +116,7 @@ func (bf *Filter) Unload() {
 // hash returns the bit offset in the bloom filter which corresponds to the
 // passed data for the given indepedent hash function number.
 func (bf *Filter) hash(hashNum uint32, data []byte) uint32 {
-	// picfightcoind: 0xfba4c795 chosen as it guarantees a reasonable bit
+	// bitcoind: 0xfba4c795 chosen as it guarantees a reasonable bit
 	// difference between hashNum values.
 	//
 	// Note that << 3 is equivalent to multiplying by 8, but is faster.
@@ -250,15 +251,15 @@ func (bf *Filter) AddOutPoint(outpoint *wire.OutPoint) {
 // script.
 //
 // This function MUST be called with the filter lock held.
-func (bf *Filter) maybeAddOutpoint(pkScript []byte, outHash *chainhash.Hash, outIdx uint32) {
+func (bf *Filter) maybeAddOutpoint(pkScrVer uint16, pkScript []byte, outHash *chainhash.Hash, outIdx uint32, outTree int8) {
 	switch bf.msgFilterLoad.Flags {
 	case wire.BloomUpdateAll:
-		outpoint := wire.NewOutPoint(outHash, outIdx)
+		outpoint := wire.NewOutPoint(outHash, outIdx, outTree)
 		bf.addOutPoint(outpoint)
 	case wire.BloomUpdateP2PubkeyOnly:
-		class := txscript.GetScriptClass(pkScript)
+		class := txscript.GetScriptClass(pkScrVer, pkScript)
 		if class == txscript.PubKeyTy || class == txscript.MultiSigTy {
-			outpoint := wire.NewOutPoint(outHash, outIdx)
+			outpoint := wire.NewOutPoint(outHash, outIdx, outTree)
 			bf.addOutPoint(outpoint)
 		}
 	}
@@ -295,7 +296,8 @@ func (bf *Filter) matchTxAndUpdate(tx *pfcutil.Tx) bool {
 			}
 
 			matched = true
-			bf.maybeAddOutpoint(txOut.PkScript, tx.Hash(), uint32(i))
+			bf.maybeAddOutpoint(txOut.Version, txOut.PkScript,
+				tx.Hash(), uint32(i), tx.Tree())
 			break
 		}
 	}

@@ -1,4 +1,5 @@
 // Copyright (c) 2014-2016 The btcsuite developers
+// Copyright (c) 2015-2016 The Decred developers
 // Use of this source code is governed by an ISC
 // license that can be found in the LICENSE file.
 
@@ -6,13 +7,12 @@ package coinset_test
 
 import (
 	"bytes"
-	"crypto/sha256"
 	"encoding/hex"
 	"fmt"
 	"testing"
 
+	"github.com/btcsuite/fastsha256"
 	"github.com/picfight/pfcd/chaincfg/chainhash"
-	"github.com/picfight/pfcd/wire"
 	"github.com/picfight/pfcutil"
 	"github.com/picfight/pfcutil/coinset"
 )
@@ -32,7 +32,7 @@ func (c *TestCoin) NumConfs() int64       { return c.TxNumConfs }
 func (c *TestCoin) ValueAge() int64       { return int64(c.TxValue) * c.TxNumConfs }
 
 func NewCoin(index int64, value pfcutil.Amount, numConfs int64) coinset.Coin {
-	h := sha256.New()
+	h := fastsha256.New()
 	h.Write([]byte(fmt.Sprintf("%d", index)))
 	hash, _ := chainhash.NewHash(h.Sum(nil))
 	c := &TestCoin{
@@ -110,7 +110,7 @@ func TestCoinSet(t *testing.T) {
 		t.Error("Expected first coin")
 	}
 
-	mtx := coinset.NewMsgTxWithInputCoins(wire.TxVersion, cs)
+	mtx := coinset.NewMsgTxWithInputCoins(cs)
 	if len(mtx.TxIn) != 1 {
 		t.Errorf("Expected only 1 TxIn, got %d", len(mtx.TxIn))
 	}
@@ -221,13 +221,13 @@ func TestMinPrioritySelector(t *testing.T) {
 }
 
 var (
-	// should be two outpoints, with 1st one having 0.035PFC value.
+	// should be two outpoints, with 1st one having 1.29994545PFC value.
 	testSimpleCoinNumConfs            = int64(1)
-	testSimpleCoinTxHash              = "9b5965c86de51d5dc824e179a05cf232db78c80ae86ca9d7cb2a655b5e19c1e2"
-	testSimpleCoinTxHex               = "0100000001a214a110f79e4abe073865ea5b3745c6e82c913bad44be70652804a5e4003b0a010000008c493046022100edd18a69664efa57264be207100c203e6cade1888cbb88a0ad748548256bb2f0022100f1027dc2e6c7f248d78af1dd90027b5b7d8ec563bb62aa85d4e74d6376f3868c0141048f3757b65ed301abd1b0e8942d1ab5b50594d3314cff0299f300c696376a0a9bf72e74710a8af7a5372d4af4bb519e2701a094ef48c8e48e3b65b28502452dceffffffff02e0673500000000001976a914686dd149a79b4a559d561fbc396d3e3c6628b98d88ace86ef102000000001976a914ac3f995655e81b875b38b64351d6f896ddbfc68588ac00000000"
-	testSimpleCoinTxValue0            = pfcutil.Amount(3500000)
+	testSimpleCoinTxHash              = "fdc5aa15e3c9fdef4e6436f79ad334842b1596edae13e8b2450ab576dc5494f5"
+	testSimpleCoinTxHex               = "010000000101e4d1fdb04871f69d198701e8c8c410da20507a74c3ffc4dea00b4d7444491c0600000001ffffffff02318fbf070000000000001976a9148485ee5dba5ac084f12450f8ebac97e2114fc90088ace06735000000000000001976a914784ebee20805af80a526f8d7603bffd6355d6d1988ac000000000000000001f9faf40700000000c92a0000090000006b483045022100ae3188239dc0983de2cfd2ed47ce5996888ef3512ee0b88c6cd6e1996781277f022021d849fc851df171bd9b4b1304bd24aee4050c7bda111fddbd9ebf83faa8640c0121026eea31de604e54e9027e1913d82e3d7f072b9553fde5792d2ac2317b9babda31"
+	testSimpleCoinTxValue0            = pfcutil.Amount(129994545)
 	testSimpleCoinTxValueAge0         = int64(testSimpleCoinTxValue0) * testSimpleCoinNumConfs
-	testSimpleCoinTxPkScript0Hex      = "76a914686dd149a79b4a559d561fbc396d3e3c6628b98d88ac"
+	testSimpleCoinTxPkScript0Hex      = "76a9148485ee5dba5ac084f12450f8ebac97e2114fc90088ac"
 	testSimpleCoinTxPkScript0Bytes, _ = hex.DecodeString(testSimpleCoinTxPkScript0Hex)
 	testSimpleCoinTxBytes, _          = hex.DecodeString(testSimpleCoinTxHex)
 	testSimpleCoinTx, _               = pfcutil.NewTxFromBytes(testSimpleCoinTxBytes)
@@ -249,7 +249,7 @@ func TestSimpleCoin(t *testing.T) {
 		t.Error("Different value of coin value than expected")
 	}
 	if !bytes.Equal(testSimpleCoin.PkScript(), testSimpleCoinTxPkScript0Bytes) {
-		t.Error("Different value of coin pkScript than expected")
+		t.Error("Different value of coin pkScript than expected", testSimpleCoin.PkScript())
 	}
 	if testSimpleCoin.NumConfs() != 1 {
 		t.Error("Differet value of num confs than expected")

@@ -1,11 +1,13 @@
 coinset
 =======
 
-[![Build Status](http://img.shields.io/travis/picfight/pfcutil.svg)](https://travis-ci.org/picfight/pfcutil)
-[![ISC License](http://img.shields.io/badge/license-ISC-blue.svg)](http://copyfree.org)
-[![GoDoc](http://img.shields.io/badge/godoc-reference-blue.svg)](http://godoc.org/github.com/picfight/pfcutil/coinset)
+[![Build Status](http://img.shields.io/travis/picfight/pfcutil.svg)]
+(https://travis-ci.org/picfight/pfcutil) [![ISC License]
+(http://img.shields.io/badge/license-ISC-blue.svg)](http://copyfree.org)
+[![GoDoc](http://img.shields.io/badge/godoc-reference-blue.svg)]
+(http://godoc.org/github.com/picfight/pfcutil/coinset)
 
-Package coinset provides picfightcoin-specific convenience functions for selecting
+Package coinset provides picfight-specific convenience functions for selecting
 from and managing sets of unspent transaction outpoints (UTXOs).
 
 A comprehensive suite of tests is provided to ensure proper functionality.  See
@@ -24,7 +26,7 @@ $ go get -u github.com/picfight/pfcutil/coinset
 Each unspent transaction outpoint is represented by the Coin interface.  An
 example of a concrete type that implements Coin is coinset.SimpleCoin.
 
-The typical use case for this library is for creating raw picfightcoin transactions
+The typical use case for this library is for creating raw picfight transactions
 given a set of Coins that may be spent by the user, for example as below:
 
 ```Go

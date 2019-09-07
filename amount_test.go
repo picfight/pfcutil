@@ -1,4 +1,5 @@
 // Copyright (c) 2013, 2014 The btcsuite developers
+// Copyright (c) 2015 The Decred developers
 // Use of this source code is governed by an ISC
 // license that can be found in the LICENSE file.
 
@@ -6,6 +7,8 @@ package pfcutil_test
 
 import (
 	"math"
+	"reflect"
+	"sort"
 	"testing"
 
 	. "github.com/picfight/pfcutil"
@@ -26,34 +29,34 @@ func TestAmountCreation(t *testing.T) {
 			expected: 0,
 		},
 		{
-			name:     "max producible",
+			name:     "max producable",
 			amount:   21e6,
 			valid:    true,
-			expected: MaxSatoshi,
+			expected: MaxAmount,
 		},
 		{
-			name:     "min producible",
+			name:     "min producable",
 			amount:   -21e6,
 			valid:    true,
-			expected: -MaxSatoshi,
+			expected: -MaxAmount,
 		},
 		{
-			name:     "exceeds max producible",
+			name:     "exceeds max producable",
 			amount:   21e6 + 1e-8,
 			valid:    true,
-			expected: MaxSatoshi + 1,
+			expected: MaxAmount + 1,
 		},
 		{
-			name:     "exceeds min producible",
+			name:     "exceeds min producable",
 			amount:   -21e6 - 1e-8,
 			valid:    true,
-			expected: -MaxSatoshi - 1,
+			expected: -MaxAmount - 1,
 		},
 		{
 			name:     "one hundred",
 			amount:   100,
 			valid:    true,
-			expected: 100 * SatoshiPerPicfightcoin,
+			expected: 100 * AtomsPerCoin,
 		},
 		{
 			name:     "fraction",
@@ -65,13 +68,13 @@ func TestAmountCreation(t *testing.T) {
 			name:     "rounding up",
 			amount:   54.999999999999943157,
 			valid:    true,
-			expected: 55 * SatoshiPerPicfightcoin,
+			expected: 55 * AtomsPerCoin,
 		},
 		{
 			name:     "rounding down",
 			amount:   55.000000000000056843,
 			valid:    true,
-			expected: 55 * SatoshiPerPicfightcoin,
+			expected: 55 * AtomsPerCoin,
 		},
 
 		// Negative tests.
@@ -120,29 +123,29 @@ func TestAmountUnitConversions(t *testing.T) {
 	}{
 		{
 			name:      "MPFC",
-			amount:    MaxSatoshi,
-			unit:      AmountMegaPFC,
+			amount:    MaxAmount,
+			unit:      AmountMegaCoin,
 			converted: 21,
 			s:         "21 MPFC",
 		},
 		{
 			name:      "kPFC",
 			amount:    44433322211100,
-			unit:      AmountKiloPFC,
+			unit:      AmountKiloCoin,
 			converted: 444.33322211100,
 			s:         "444.333222111 kPFC",
 		},
 		{
-			name:      "PFC",
+			name:      "Coin",
 			amount:    44433322211100,
-			unit:      AmountPFC,
+			unit:      AmountCoin,
 			converted: 444333.22211100,
 			s:         "444333.222111 PFC",
 		},
 		{
 			name:      "mPFC",
 			amount:    44433322211100,
-			unit:      AmountMilliPFC,
+			unit:      AmountMilliCoin,
 			converted: 444333222.11100,
 			s:         "444333222.111 mPFC",
 		},
@@ -150,17 +153,17 @@ func TestAmountUnitConversions(t *testing.T) {
 
 			name:      "μPFC",
 			amount:    44433322211100,
-			unit:      AmountMicroPFC,
+			unit:      AmountMicroCoin,
 			converted: 444333222111.00,
 			s:         "444333222111 μPFC",
 		},
 		{
 
-			name:      "satoshi",
+			name:      "atom",
 			amount:    44433322211100,
-			unit:      AmountSatoshi,
+			unit:      AmountAtom,
 			converted: 44433322211100,
-			s:         "44433322211100 Satoshi",
+			s:         "44433322211100 Atom",
 		},
 		{
 
@@ -185,18 +188,18 @@ func TestAmountUnitConversions(t *testing.T) {
 			continue
 		}
 
-		// Verify that Amount.ToPFC works as advertised.
-		f1 := test.amount.ToUnit(AmountPFC)
-		f2 := test.amount.ToPFC()
+		// Verify that Amount.ToCoin works as advertised.
+		f1 := test.amount.ToUnit(AmountCoin)
+		f2 := test.amount.ToCoin()
 		if f1 != f2 {
-			t.Errorf("%v: ToPFC does not match ToUnit(AmountPFC): %v != %v", test.name, f1, f2)
+			t.Errorf("%v: ToCoin does not match ToUnit(AmountCoin): %v != %v", test.name, f1, f2)
 		}
 
 		// Verify that Amount.String works as advertised.
-		s1 := test.amount.Format(AmountPFC)
+		s1 := test.amount.Format(AmountCoin)
 		s2 := test.amount.String()
 		if s1 != s2 {
-			t.Errorf("%v: String does not match Format(AmountPicfightcoin): %v != %v", test.name, s1, s2)
+			t.Errorf("%v: String does not match Format(AmountCoin): %v != %v", test.name, s1, s2)
 		}
 	}
 }
@@ -258,15 +261,15 @@ func TestAmountMulF64(t *testing.T) {
 		},
 		{
 			name: "Round down",
-			amt:  49, // 49 Satoshis
+			amt:  49, // 49 Atoms
 			mul:  0.01,
 			res:  0,
 		},
 		{
 			name: "Round up",
-			amt:  50, // 50 Satoshis
+			amt:  50, // 50 Atoms
 			mul:  0.01,
-			res:  1, // 1 Satoshi
+			res:  1, // 1 Atom
 		},
 		{
 			name: "Multiply by 0.",
@@ -276,27 +279,27 @@ func TestAmountMulF64(t *testing.T) {
 		},
 		{
 			name: "Multiply 1 by 0.5.",
-			amt:  1, // 1 Satoshi
+			amt:  1, // 1 Atom
 			mul:  0.5,
-			res:  1, // 1 Satoshi
+			res:  1, // 1 Atom
 		},
 		{
 			name: "Multiply 100 by 66%.",
-			amt:  100, // 100 Satoshis
+			amt:  100, // 100 Atoms
 			mul:  0.66,
-			res:  66, // 66 Satoshis
+			res:  66, // 66 Atoms
 		},
 		{
 			name: "Multiply 100 by 66.6%.",
-			amt:  100, // 100 Satoshis
+			amt:  100, // 100 Atoms
 			mul:  0.666,
-			res:  67, // 67 Satoshis
+			res:  67, // 67 Atoms
 		},
 		{
 			name: "Multiply 100 by 2/3.",
-			amt:  100, // 100 Satoshis
+			amt:  100, // 100 Atoms
 			mul:  2.0 / 3,
-			res:  67, // 67 Satoshis
+			res:  67, // 67 Atoms
 		},
 	}
 
@@ -304,6 +307,46 @@ func TestAmountMulF64(t *testing.T) {
 		a := test.amt.MulF64(test.mul)
 		if a != test.res {
 			t.Errorf("%v: expected %v got %v", test.name, test.res, a)
+		}
+	}
+}
+
+func TestAmountSorter(t *testing.T) {
+	tests := []struct {
+		name string
+		as   []Amount
+		want []Amount
+	}{
+		{
+			name: "Sort zero length slice of Amounts",
+			as:   []Amount{},
+			want: []Amount{},
+		},
+		{
+			name: "Sort 1-element slice of Amounts",
+			as:   []Amount{7},
+			want: []Amount{7},
+		},
+		{
+			name: "Sort 2-element slice of Amounts",
+			as:   []Amount{7, 5},
+			want: []Amount{5, 7},
+		},
+		{
+			name: "Sort 6-element slice of Amounts",
+			as:   []Amount{0, 9e8, 4e6, 4e6, 3, 9e12},
+			want: []Amount{0, 3, 4e6, 4e6, 9e8, 9e12},
+		},
+	}
+
+	for i, test := range tests {
+		result := make([]Amount, len(test.as))
+		copy(result, test.as)
+		sort.Sort(AmountSorter(result))
+		if !reflect.DeepEqual(result, test.want) {
+			t.Errorf("AmountSorter #%d got %v want %v", i, result,
+				test.want)
+			continue
 		}
 	}
 }

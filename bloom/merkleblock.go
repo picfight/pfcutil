@@ -1,4 +1,5 @@
 // Copyright (c) 2013-2016 The btcsuite developers
+// Copyright (c) 2015-2016 The Decred developers
 // Use of this source code is governed by an ISC
 // license that can be found in the LICENSE file.
 
@@ -111,7 +112,7 @@ func NewMerkleBlock(block *pfcutil.Block, filter *Filter) (*wire.MsgMerkleBlock,
 	// Create and return the merkle block.
 	msgMerkleBlock := wire.MsgMerkleBlock{
 		Header:       block.MsgBlock().Header,
-		Transactions: mBlock.numTx,
+		Transactions: uint32(mBlock.numTx),
 		Hashes:       make([]*chainhash.Hash, 0, len(mBlock.finalHashes)),
 		Flags:        make([]byte, (len(mBlock.bits)+7)/8),
 	}

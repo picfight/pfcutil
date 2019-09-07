@@ -1,12 +1,14 @@
 hdkeychain
 ==========
 
-[![Build Status](http://img.shields.io/travis/picfight/pfcutil.svg)](https://travis-ci.org/picfight/pfcutil)
-[![ISC License](http://img.shields.io/badge/license-ISC-blue.svg)](http://copyfree.org)
-[![GoDoc](http://img.shields.io/badge/godoc-reference-blue.svg)](http://godoc.org/github.com/picfight/pfcutil/hdkeychain)
+[![Build Status](http://img.shields.io/travis/picfight/pfcutil.svg)]
+(https://travis-ci.org/picfight/pfcutil) [![ISC License]
+(http://img.shields.io/badge/license-ISC-blue.svg)](http://copyfree.org)
+[![GoDoc](http://img.shields.io/badge/godoc-reference-blue.svg)]
+(http://godoc.org/github.com/picfight/pfcutil/hdkeychain)
 
-Package hdkeychain provides an API for picfightcoin hierarchical deterministic
-extended keys (BIP0032).
+Package hdkeychain provides an API for PicFight hierarchical deterministic
+extended keys (based on BIP0032).
 
 A comprehensive suite of tests is provided to ensure proper functionality.  See
 `test_coverage.txt` for the gocov coverage report.  Alternatively, if you are
@@ -23,11 +25,11 @@ report.
 - Easy serialization and deserialization for both private and public extended
   keys
 - Support for custom networks by registering them with chaincfg
-- Obtaining the underlying EC pubkeys, EC privkeys, and associated picfightcoin
-  addresses ties in seamlessly with existing pfcec and pfcutil types which
+- Obtaining the underlying EC pubkeys, EC privkeys, and associated picfight
+  addresses ties in seamlessly with existing btcec and pfcutil types which
   provide powerful tools for working with them to do things like sign
   transations and generate payment scripts
-- Uses the pfcec package which is highly optimized for secp256k1
+- Uses the btcec package which is highly optimized for secp256k1
 - Code examples including:
   - Generating a cryptographically secure random seed and deriving a
     master node from it
@@ -44,13 +46,16 @@ $ go get -u github.com/picfight/pfcutil/hdkeychain
 
 ## Examples
 
-* [NewMaster Example](http://godoc.org/github.com/picfight/pfcutil/hdkeychain#example-NewMaster)  
+* [NewMaster Example]
+  (http://godoc.org/github.com/picfight/pfcutil/hdkeychain#example-NewMaster)  
   Demonstrates how to generate a cryptographically random seed then use it to
   create a new master node (extended key).
-* [Default Wallet Layout Example](http://godoc.org/github.com/picfight/pfcutil/hdkeychain#example-package--DefaultWalletLayout)  
+* [Default Wallet Layout Example]
+  (http://godoc.org/github.com/picfight/pfcutil/hdkeychain#example-package--DefaultWalletLayout)  
   Demonstrates the default hierarchical deterministic wallet layout as described
   in BIP0032.
-* [Audits Use Case Example](http://godoc.org/github.com/picfight/pfcutil/hdkeychain#example-package--Audits)  
+* [Audits Use Case Example]
+  (http://godoc.org/github.com/picfight/pfcutil/hdkeychain#example-package--Audits)  
   Demonstrates the audits use case in BIP0032.
 
 ## License

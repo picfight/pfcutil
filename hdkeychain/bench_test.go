@@ -1,4 +1,5 @@
 // Copyright (c) 2014 The btcsuite developers
+// Copyright (c) 2015 The Decred developers
 // Use of this source code is governed by an ISC
 // license that can be found in the LICENSE file.
 
@@ -79,6 +80,6 @@ func BenchmarkSerialize(b *testing.B) {
 	b.StartTimer()
 
 	for i := 0; i < b.N; i++ {
-		_ = masterKey.String()
+		masterKey.String()
 	}
 }

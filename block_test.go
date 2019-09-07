@@ -1,4 +1,5 @@
 // Copyright (c) 2013-2016 The btcsuite developers
+// Copyright (c) 2015-2016 The Decred developers
 // Use of this source code is governed by an ISC
 // license that can be found in the LICENSE file.
 
@@ -28,7 +29,7 @@ func TestBlock(t *testing.T) {
 	}
 
 	// Ensure block height set and get work properly.
-	wantHeight := int32(100000)
+	wantHeight := int64(100000)
 	b.SetHeight(wantHeight)
 	if gotHeight := b.Height(); gotHeight != wantHeight {
 		t.Errorf("Height: mismatched height - got %v, want %v",
@@ -36,7 +37,7 @@ func TestBlock(t *testing.T) {
 	}
 
 	// Hash for block 100,000.
-	wantHashStr := "3ba27aa200b1cecaad478d2b00432346c3f1f3986da1afd33e506"
+	wantHashStr := "85457e2420d265386a84fc48aaee4f6dc98bac015dcc8d536ead20e2faf66a9d"
 	wantHash, err := chainhash.NewHashFromStr(wantHashStr)
 	if err != nil {
 		t.Errorf("NewHashFromStr: %v", err)
@@ -53,10 +54,10 @@ func TestBlock(t *testing.T) {
 
 	// Hashes for the transactions in Block100000.
 	wantTxHashes := []string{
-		"8c14f0db3df150123e6f3dbbf30f8b955a8249b62ac1d1ff16284aefa3d06d87",
-		"fff2525b8931402dd09222c50775608f75787bd2b87e56995a7bdd30f79702c4",
-		"6359f0868171b1d194cbee1af2f16ea598ae8fad666d9b012c8ed2b79a236ec4",
-		"e9a66845e05d5abc0ad04ec80f774a7e585c6e8db975962d069a522137b80c1d",
+		"1cbd9fe1a143a265cc819ff9d8132a7cbc4ca48eb68c0de39cfdf7ecf42cbbd1",
+		"f3f9bc9473b6fe18d66e3ac2a1a95b6317b280f4e6687a074075b56aebf1eb53",
+		"ba2ed6210a561a4dab34ec8668ad61ec97f126826dae893719dff7383b9d6928",
+		"c5dde35b55b856cf73b2d85737c68b0dcfdaad01d0271ee509f3a7efacc025b3",
 	}
 
 	// Create a new block to nuke all cached data.
@@ -145,14 +146,14 @@ func TestBlock(t *testing.T) {
 
 	// Transaction offsets and length for the transaction in Block100000.
 	wantTxLocs := []wire.TxLoc{
-		{TxStart: 81, TxLen: 135},
-		{TxStart: 216, TxLen: 259},
-		{TxStart: 475, TxLen: 257},
-		{TxStart: 732, TxLen: 225},
+		{TxStart: 181, TxLen: 159},
+		{TxStart: 340, TxLen: 285},
+		{TxStart: 625, TxLen: 283},
+		{TxStart: 908, TxLen: 249},
 	}
 
 	// Ensure the transaction location information is accurate.
-	txLocs, err := b.TxLoc()
+	txLocs, _, err := b.TxLoc()
 	if err != nil {
 		t.Errorf("TxLoc: %v", err)
 		return
@@ -257,7 +258,7 @@ func TestBlockErrors(t *testing.T) {
 	}
 
 	// Truncate the block byte buffer to force errors.
-	shortBytes := block100000Bytes[:80]
+	shortBytes := block100000Bytes[:100]
 	_, err = pfcutil.NewBlockFromBytes(shortBytes)
 	if err != io.EOF {
 		t.Errorf("NewBlockFromBytes: did not get expected error - "+
@@ -292,7 +293,7 @@ func TestBlockErrors(t *testing.T) {
 	// This makes use of the test package only function, SetBlockBytes, to
 	// inject a short byte buffer.
 	b.SetBlockBytes(shortBytes)
-	_, err = b.TxLoc()
+	_, _, err = b.TxLoc()
 	if err != io.EOF {
 		t.Errorf("TxLoc: did not get expected error - "+
 			"got %v, want %v", err, io.EOF)
@@ -549,4 +550,5 @@ var Block100000 = wire.MsgBlock{
 			LockTime: 0,
 		},
 	},
+	STransactions: []*wire.MsgTx{},
 }

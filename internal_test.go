@@ -1,10 +1,11 @@
-// Copyright (c) 2013-2017 The btcsuite developers
+// Copyright (c) 2013-2014 The btcsuite developers
+// Copyright (c) 2015 The Decred developers
 // Use of this source code is governed by an ISC
 // license that can be found in the LICENSE file.
 
 /*
-This test file is part of the pfcutil package rather than than the
-pfcutil_test package so it can bridge access to the internals to properly test
+This test file is part of the btcutil package rather than than the
+btcutil_test package so it can bridge access to the internals to properly test
 cases which are either not possible or can't reliably be tested via the public
 interface. The functions are only exported while the tests are being run.
 */
@@ -12,10 +13,10 @@ interface. The functions are only exported while the tests are being run.
 package pfcutil
 
 import (
-	"github.com/picfight/pfcd/pfcec"
+	"github.com/picfight/pfcd/chaincfg/chainec"
 	"github.com/picfight/pfcutil/base58"
-	"github.com/picfight/pfcutil/bech32"
-	"golang.org/x/crypto/ripemd160"
+
+	"github.com/btcsuite/golangcrypto/ripemd160"
 )
 
 // SetBlockBytes sets the internal serialized block byte buffer to the passed
@@ -34,8 +35,7 @@ func TstAppDataDir(goos, appName string, roaming bool) string {
 // TstAddressPubKeyHash makes an AddressPubKeyHash, setting the
 // unexported fields with the parameters hash and netID.
 func TstAddressPubKeyHash(hash [ripemd160.Size]byte,
-	netID byte) *AddressPubKeyHash {
-
+	netID [2]byte) *AddressPubKeyHash {
 	return &AddressPubKeyHash{
 		hash:  hash,
 		netID: netID,
@@ -45,7 +45,7 @@ func TstAddressPubKeyHash(hash [ripemd160.Size]byte,
 // TstAddressScriptHash makes an AddressScriptHash, setting the
 // unexported fields with the parameters hash and netID.
 func TstAddressScriptHash(hash [ripemd160.Size]byte,
-	netID byte) *AddressScriptHash {
+	netID [2]byte) *AddressScriptHash {
 
 	return &AddressScriptHash{
 		hash:  hash,
@@ -53,62 +53,22 @@ func TstAddressScriptHash(hash [ripemd160.Size]byte,
 	}
 }
 
-// TstAddressWitnessPubKeyHash creates an AddressWitnessPubKeyHash, initiating
-// the fields as given.
-func TstAddressWitnessPubKeyHash(version byte, program [20]byte,
-	hrp string) *AddressWitnessPubKeyHash {
-
-	return &AddressWitnessPubKeyHash{
-		hrp:            hrp,
-		witnessVersion: version,
-		witnessProgram: program,
-	}
-}
-
-// TstAddressWitnessScriptHash creates an AddressWitnessScriptHash, initiating
-// the fields as given.
-func TstAddressWitnessScriptHash(version byte, program [32]byte,
-	hrp string) *AddressWitnessScriptHash {
-
-	return &AddressWitnessScriptHash{
-		hrp:            hrp,
-		witnessVersion: version,
-		witnessProgram: program,
-	}
-}
-
 // TstAddressPubKey makes an AddressPubKey, setting the unexported fields with
 // the parameters.
 func TstAddressPubKey(serializedPubKey []byte, pubKeyFormat PubKeyFormat,
-	netID byte) *AddressPubKey {
+	netID [2]byte) *AddressSecpPubKey {
 
-	pubKey, _ := pfcec.ParsePubKey(serializedPubKey, pfcec.S256())
-	return &AddressPubKey{
+	pubKey, _ := chainec.Secp256k1.ParsePubKey(serializedPubKey)
+	return &AddressSecpPubKey{
 		pubKeyFormat: pubKeyFormat,
-		pubKey:       (*pfcec.PublicKey)(pubKey),
+		pubKey:       chainec.PublicKey(pubKey),
 		pubKeyHashID: netID,
 	}
 }
 
 // TstAddressSAddr returns the expected script address bytes for
-// P2PKH and P2SH picfightcoin addresses.
+// P2PKH and P2SH picfight addresses.
 func TstAddressSAddr(addr string) []byte {
 	decoded := base58.Decode(addr)
-	return decoded[1 : 1+ripemd160.Size]
-}
-
-// TstAddressSegwitSAddr returns the expected witness program bytes for
-// bech32 encoded P2WPKH and P2WSH picfightcoin addresses.
-func TstAddressSegwitSAddr(addr string) []byte {
-	_, data, err := bech32.Decode(addr)
-	if err != nil {
-		return []byte{}
-	}
-
-	// First byte is version, rest is base 32 encoded data.
-	data, err = bech32.ConvertBits(data[1:], 5, 8, false)
-	if err != nil {
-		return []byte{}
-	}
-	return data
+	return decoded[2 : 2+ripemd160.Size]
 }

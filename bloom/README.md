@@ -1,11 +1,13 @@
 bloom
 =====
 
-[![Build Status](http://img.shields.io/travis/picfight/pfcutil.svg)](https://travis-ci.org/picfight/pfcutil)
-[![ISC License](http://img.shields.io/badge/license-ISC-blue.svg)](http://copyfree.org)
-[![GoDoc](http://img.shields.io/badge/godoc-reference-blue.svg)](http://godoc.org/github.com/picfight/pfcutil/bloom)
+[![Build Status](http://img.shields.io/travis/picfight/pfcutil.svg)]
+(https://travis-ci.org/picfight/pfcutil) [![ISC License]
+(http://img.shields.io/badge/license-ISC-blue.svg)](http://copyfree.org)
+[![GoDoc](http://img.shields.io/badge/godoc-reference-blue.svg)]
+(http://godoc.org/github.com/picfight/pfcutil/bloom)
 
-Package bloom provides an API for dealing with picfightcoin-specific bloom filters.
+Package bloom provides an API for dealing with picfight-specific bloom filters.
 
 A comprehensive suite of tests is provided to ensure proper functionality.  See
 `test_coverage.txt` for the gocov coverage report.  Alternatively, if you are
@@ -20,7 +22,8 @@ $ go get -u github.com/picfight/pfcutil/bloom
 
 ## Examples
 
-* [NewFilter Example](http://godoc.org/github.com/picfight/pfcutil/bloom#example-NewFilter)  
+* [NewFilter Example]
+  (http://godoc.org/github.com/picfight/pfcutil/bloom#example-NewFilter)
   Demonstrates how to create a new bloom filter, add a transaction hash to it,
   and check if the filter matches the transaction.
 

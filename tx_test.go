@@ -1,4 +1,5 @@
 // Copyright (c) 2013-2016 The btcsuite developers
+// Copyright (c) 2015-2016 The Decred developers
 // Use of this source code is governed by an ISC
 // license that can be found in the LICENSE file.
 
@@ -34,8 +35,32 @@ func TestTx(t *testing.T) {
 			gotIndex, wantIndex)
 	}
 
+	// Ensure tree type set and get work properly.
+	wantTree := int8(0)
+	tx.SetTree(0)
+	if gotTree := tx.Tree(); gotTree != wantTree {
+		t.Errorf("Index: mismatched index - got %v, want %v",
+			gotTree, wantTree)
+	}
+
+	// Ensure stake transaction index set and get work properly.
+	wantIndex = 0
+	tx.SetIndex(0)
+	if gotIndex := tx.Index(); gotIndex != wantIndex {
+		t.Errorf("Index: mismatched index - got %v, want %v",
+			gotIndex, wantIndex)
+	}
+
+	// Ensure tree type set and get work properly.
+	wantTree = int8(1)
+	tx.SetTree(1)
+	if gotTree := tx.Tree(); gotTree != wantTree {
+		t.Errorf("Index: mismatched index - got %v, want %v",
+			gotTree, wantTree)
+	}
+
 	// Hash for block 100,000 transaction 0.
-	wantHashStr := "8c14f0db3df150123e6f3dbbf30f8b955a8249b62ac1d1ff16284aefa3d06d87"
+	wantHashStr := "1cbd9fe1a143a265cc819ff9d8132a7cbc4ca48eb68c0de39cfdf7ecf42cbbd1"
 	wantHash, err := chainhash.NewHashFromStr(wantHashStr)
 	if err != nil {
 		t.Errorf("NewHashFromStr: %v", err)

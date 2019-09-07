@@ -1,4 +1,5 @@
 // Copyright (c) 2014-2016 The btcsuite developers
+// Copyright (c) 2015-2016 The Decred developers
 // Use of this source code is governed by an ISC
 // license that can be found in the LICENSE file.
 
@@ -27,7 +28,7 @@ func ExampleNewFilter() {
 
 	// Create a transaction hash and add it to the filter.  This particular
 	// trasaction is the first transaction in block 310,000 of the main
-	// picfightcoin block chain.
+	// bitcoin block chain.
 	txHashStr := "fd611c56ca0d378cdcd16244b45c2ba9588da3adac367c4ef43e808b280b8a45"
 	txHash, err := chainhash.NewHashFromStr(txHashStr)
 	if err != nil {

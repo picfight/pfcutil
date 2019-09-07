@@ -1,4 +1,5 @@
-// Copyright (c) 2014-2017 The btcsuite developers
+// Copyright (c) 2014-2016 The btcsuite developers
+// Copyright (c) 2015-2016 The Decred developers
 // Use of this source code is governed by an ISC
 // license that can be found in the LICENSE file.
 
@@ -124,8 +125,8 @@ func (cs *CoinSet) removeElement(e *list.Element) Coin {
 
 // NewMsgTxWithInputCoins takes the coins in the CoinSet and makes them
 // the inputs to a new wire.MsgTx which is returned.
-func NewMsgTxWithInputCoins(txVersion int32, inputCoins Coins) *wire.MsgTx {
-	msgTx := wire.NewMsgTx(txVersion)
+func NewMsgTxWithInputCoins(inputCoins Coins) *wire.MsgTx {
+	msgTx := wire.NewMsgTx()
 	coins := inputCoins.Coins()
 	msgTx.TxIn = make([]*wire.TxIn, len(coins))
 	for i, coin := range coins {
@@ -203,8 +204,10 @@ func (s MinNumberCoinSelector) CoinSelect(targetValue pfcutil.Amount, coins []Co
 	sortedCoins := make([]Coin, 0, len(coins))
 	sortedCoins = append(sortedCoins, coins...)
 	sort.Sort(sort.Reverse(byAmount(sortedCoins)))
-
-	return MinIndexCoinSelector(s).CoinSelect(targetValue, sortedCoins)
+	return (&MinIndexCoinSelector{
+		MaxInputs:       s.MaxInputs,
+		MinChangeAmount: s.MinChangeAmount,
+	}).CoinSelect(targetValue, sortedCoins)
 }
 
 // MaxValueAgeCoinSelector is a CoinSelector that attempts to construct
@@ -225,8 +228,10 @@ func (s MaxValueAgeCoinSelector) CoinSelect(targetValue pfcutil.Amount, coins []
 	sortedCoins := make([]Coin, 0, len(coins))
 	sortedCoins = append(sortedCoins, coins...)
 	sort.Sort(sort.Reverse(byValueAge(sortedCoins)))
-
-	return MinIndexCoinSelector(s).CoinSelect(targetValue, sortedCoins)
+	return (&MinIndexCoinSelector{
+		MaxInputs:       s.MaxInputs,
+		MinChangeAmount: s.MinChangeAmount,
+	}).CoinSelect(targetValue, sortedCoins)
 }
 
 // MinPriorityCoinSelector is a CoinSelector that attempts to construct
@@ -343,7 +348,7 @@ func (a byAmount) Swap(i, j int)      { a[i], a[j] = a[j], a[i] }
 func (a byAmount) Less(i, j int) bool { return a[i].Value() < a[j].Value() }
 
 // SimpleCoin defines a concrete instance of Coin that is backed by a
-// pfcutil.Tx, a specific outpoint index, and the number of confirmations
+// btcutil.Tx, a specific outpoint index, and the number of confirmations
 // that transaction has had.
 type SimpleCoin struct {
 	Tx         *pfcutil.Tx

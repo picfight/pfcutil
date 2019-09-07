@@ -1,4 +1,5 @@
 // Copyright (c) 2013, 2014 The btcsuite developers
+// Copyright (c) 2015 The Decred developers
 // Use of this source code is governed by an ISC
 // license that can be found in the LICENSE file.
 
@@ -61,7 +62,7 @@ func MurmurHash3(seed uint32, data []byte) uint32 {
 	}
 
 	// Finalization.
-	hash ^= dataLen
+	hash ^= uint32(dataLen)
 	hash ^= hash >> 16
 	hash *= 0x85ebca6b
 	hash ^= hash >> 13

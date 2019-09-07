@@ -1,4 +1,5 @@
 // Copyright (c) 2013-2015 The btcsuite developers
+// Copyright (c) 2015 The Decred developers
 // Use of this source code is governed by an ISC
 // license that can be found in the LICENSE file.
 
@@ -39,7 +40,7 @@ func Decode(b string) []byte {
 		}
 	}
 	flen := numZeros + len(tmpval)
-	val := make([]byte, flen)
+	val := make([]byte, flen, flen)
 	copy(val[numZeros:], tmpval)
 
 	return val

@@ -1,4 +1,5 @@
-// Copyright (c) 2013-2017 The btcsuite developers
+// Copyright (c) 2013-2014 The btcsuite developers
+// Copyright (c) 2015 The Decred developers
 // Use of this source code is governed by an ISC
 // license that can be found in the LICENSE file.
 
@@ -80,7 +81,7 @@ func TestBase58(t *testing.T) {
 			t.Errorf("hex.DecodeString failed failed #%d: got: %s", x, test.in)
 			continue
 		}
-		if res := base58.Decode(test.out); !bytes.Equal(res, b) {
+		if res := base58.Decode(test.out); bytes.Equal(res, b) != true {
 			t.Errorf("Decode test #%d failed: got: %q want: %q",
 				x, res, test.in)
 			continue

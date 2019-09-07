@@ -1,4 +1,5 @@
-// Copyright (c) 2013-2017 The btcsuite developers
+// Copyright (c) 2013-2014 The btcsuite developers
+// Copyright (c) 2015 The Decred developers
 // Use of this source code is governed by an ISC
 // license that can be found in the LICENSE file.
 
@@ -24,8 +25,10 @@ func appDataDir(goos, appName string, roaming bool) string {
 	}
 
 	// The caller really shouldn't prepend the appName with a period, but
-	// if they do, handle it gracefully by trimming it.
-	appName = strings.TrimPrefix(appName, ".")
+	// if they do, handle it gracefully by stripping it.
+	if strings.HasPrefix(appName, ".") {
+		appName = appName[1:]
+	}
 	appNameUpper := string(unicode.ToUpper(rune(appName[0]))) + appName[1:]
 	appNameLower := string(unicode.ToLower(rune(appName[0]))) + appName[1:]
 

@@ -10,17 +10,17 @@ import (
 func ExampleAmount() {
 
 	a := pfcutil.Amount(0)
-	fmt.Println("Zero Satoshi:", a)
+	fmt.Println("Zero Atom:", a)
 
 	a = pfcutil.Amount(1e8)
-	fmt.Println("100,000,000 Satoshis:", a)
+	fmt.Println("100,000,000 Atoms:", a)
 
 	a = pfcutil.Amount(1e5)
-	fmt.Println("100,000 Satoshis:", a)
+	fmt.Println("100,000 Atoms:", a)
 	// Output:
-	// Zero Satoshi: 0 PFC
-	// 100,000,000 Satoshis: 1 PFC
-	// 100,000 Satoshis: 0.001 PFC
+	// Zero Atom: 0 PFC
+	// 100,000,000 Atoms: 1 PFC
+	// 100,000 Atoms: 0.001 PFC
 }
 
 func ExampleNewAmount() {
@@ -55,22 +55,22 @@ func ExampleNewAmount() {
 	// Output: 1 PFC
 	// 0.01234567 PFC
 	// 0 PFC
-	// invalid picfightcoin amount
+	// invalid coin amount
 }
 
 func ExampleAmount_unitConversions() {
 	amount := pfcutil.Amount(44433322211100)
 
-	fmt.Println("Satoshi to kPFC:", amount.Format(pfcutil.AmountKiloPFC))
-	fmt.Println("Satoshi to PFC:", amount)
-	fmt.Println("Satoshi to MilliPFC:", amount.Format(pfcutil.AmountMilliPFC))
-	fmt.Println("Satoshi to MicroPFC:", amount.Format(pfcutil.AmountMicroPFC))
-	fmt.Println("Satoshi to Satoshi:", amount.Format(pfcutil.AmountSatoshi))
+	fmt.Println("Atom to kCoin:", amount.Format(pfcutil.AmountKiloCoin))
+	fmt.Println("Atom to Coin:", amount)
+	fmt.Println("Atom to MilliCoin:", amount.Format(pfcutil.AmountMilliCoin))
+	fmt.Println("Atom to MicroCoin:", amount.Format(pfcutil.AmountMicroCoin))
+	fmt.Println("Atom to Atom:", amount.Format(pfcutil.AmountAtom))
 
 	// Output:
-	// Satoshi to kPFC: 444.333222111 kPFC
-	// Satoshi to PFC: 444333.222111 PFC
-	// Satoshi to MilliPFC: 444333222.111 mPFC
-	// Satoshi to MicroPFC: 444333222111 μPFC
-	// Satoshi to Satoshi: 44433322211100 Satoshi
+	// Atom to kCoin: 444.333222111 kPFC
+	// Atom to Coin: 444333.222111 PFC
+	// Atom to MilliCoin: 444333222.111 mPFC
+	// Atom to MicroCoin: 444333222111 μPFC
+	// Atom to Atom: 44433322211100 Atom
 }
